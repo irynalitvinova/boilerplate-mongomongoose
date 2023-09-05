@@ -23,7 +23,7 @@ const createAndSavePerson = function (done) {
 
 const arrayOfPeople = [
   { name: "Leonardo DiCaprio", age: 48, favoriteFoods: ["pasta", "pizza", "seafood"] },
-  { name: "Adam Sandler ", age: 56, favoriteFoods: ["lasagna", "sushi", "pancakes"] },
+  { name: "Adam Sandler", age: 56, favoriteFoods: ["lasagna", "sushi", "pancakes"] },
   { name: "Johnny Depp", age: 60, favoriteFoods: ["pork", "chocolate", "Mexican food"] }
 ];
 
@@ -72,12 +72,35 @@ const findPersonById = function (personId, done) {
   });
 };
 
-
-const findEditThenSave = (personId, done) => {
-  const foodToAdd = "hamburger";
-
-  done(null /*, data*/);
+const findEditThenSave = function (personId, done) {
+  const foodToAdd = 'hamburger';
+  // .findById() method to find a person by _id with the parameter personId as search key. 
+  Person.findById(personId, function (err, person) {
+    if (err) {
+      return console.log(err);
+    }
+    else {
+      // Array.push() method to add "hamburger" to the list of the person's favoriteFoods
+      person.favoriteFoods.push(foodToAdd);
+      // and inside the find callback - save() the updated Person.
+      person.save(function (err, updatedPerson) {
+        if (err) {
+          return console.log(err);
+        }
+        else {
+          done(null, updatedPerson)
+        }
+      });
+    }
+  });
 };
+// const findEditThenSave = (personId, done) => {
+//   const foodToAdd = "hamburger";
+
+//   done(null /*, data*/);
+// };
+
+
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
